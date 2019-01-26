@@ -1,0 +1,20 @@
+<% flash.each do |name, msg| -%>
+     <%= content_tag :div, msg, class: name %>
+<% end -%>
+
+<%= form_for @url, url: { action: "create"} do |f| %>
+  <%= f.label "Url to shorten:" %></br>
+  <%= f.text_field :link %></br>
+
+  <%= f.label "Shortening for link:" %></br>
+  <%= f.text_field :shortening %></br>
+
+  <%= f.label "Days to delete link:" %></br>
+  <%= f.select (:days_to_delete) do  %>
+    <% (1..10).each do |c| -%>
+      <%= content_tag(:option, c, value: c) %>
+    <% end %>
+  <% end %></br>
+
+  <%= f.submit "Submit" %>
+<% end %>
