@@ -12,8 +12,8 @@ class UrlsController < ApplicationController
   def create
     @url = Url.new(url_params)
     if @url.save
-      flash[:created].now = "Your url for link is: https://b3v3-url-shortener.herokuapp.com//url/#{@url.shortening}"
-      render 'new'
+      flash[:created] = "Your url for link is: https://b3v3-url-shortener.herokuapp.com/url/#{@url.shortening}"
+      redirect_to '/url/new'
     else
       render 'new'
     end

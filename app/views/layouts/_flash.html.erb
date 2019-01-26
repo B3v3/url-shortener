@@ -1,0 +1,9 @@
+<div class="container">
+  <% if flash.any? %>
+    <div class="alert alert-success text-center h3" role="alert">
+      <% flash.each do |name, msg| -%>
+           <%= content_tag :div, msg, class: name %>
+      <% end -%>
+    <% end %>
+  </div>
+</div>
