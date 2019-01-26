@@ -20,7 +20,9 @@ class Url < ApplicationRecord
 
   protected
     def set_shortening_if_non
-      self.shortening = generate_shortening if self.shortening.blank?
+      if self.shortening.blank?
+        self.shortening = create_shortening
+      end
     end
 
     def set_days_to_delete_if_non
@@ -36,6 +38,23 @@ class Url < ApplicationRecord
 
   private
     def generate_shortening
-      ((0...36).map{ |i| i.to_s 36}).shuffle[0...16].join("")
+      short = ""
+      pool = ((0...36).map{ |i| i.to_s 36})
+
+      16.times do
+       short = short + pool.sample
+      end
+
+      return short
+    end
+
+    def create_shortening
+      short = generate_shortening
+
+      while Url.find_by(shortening: short).present?
+       short = generate_short
+      end
+
+      return short
     end
 end
