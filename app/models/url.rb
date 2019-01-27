@@ -5,6 +5,7 @@ class Url < ApplicationRecord
   before_validation :set_days_to_delete_if_non
   before_validation :set_shortening_if_non
   before_save :check_protocol_existence
+  after_save :url_expiring
 
   VALID_SHORTENING_REGEX = /\A[a-z0-9\-_]+\z/i
   validates :shortening, presence: true, length: { minimum: 4, maximum: 16 },
@@ -34,6 +35,10 @@ class Url < ApplicationRecord
       unless /^http/ === self.link
         self.link = "http://" + "#{self.link}"
       end
+    end
+
+    def url_expiring
+      UrlDeletingJob.set(wait: (self.days_to_delete).days).perform_later(self)
     end
 
   private

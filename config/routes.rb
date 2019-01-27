@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   post "url/new", to: "urls#create"
 
   get "url/:id", to: "urls#show"
+
+  root 'urls#new'
 end
